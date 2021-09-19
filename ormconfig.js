@@ -10,7 +10,7 @@ module.exports = {
   username: process.env.DATABASE_USERNAME,
   password: process.env.DATABASE_PASSWORD,
   database: process.env.DATABASE_NAME,
-  synchronize: false,
+  synchronize: true,
   logging: (process.env.NODE_ENV || 'local').toLowerCase() !== 'production',
   migrationsRun: false,
   entities: [process.env.ENTITIES_PATH],

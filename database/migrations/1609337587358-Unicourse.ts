@@ -11,7 +11,7 @@ export class HackathonStarter1609337587358 implements MigrationInterface {
     await queryRunner.query('CREATE UNIQUE INDEX "index_email-verification_userId" ON "email-verification" ("userId") ');
     await queryRunner.query('CREATE TABLE "password-reset" ("token" character(21) NOT NULL, "userId" integer NOT NULL, "validUntil" TIMESTAMP NOT NULL, CONSTRAINT "PK_f1ad961ee6d0da067f483338751" PRIMARY KEY ("token"))');
     await queryRunner.query('CREATE UNIQUE INDEX "index_password-reset_userId" ON "password-reset" ("userId") ');
-    await queryRunner.query('CREATE TABLE "user" ("id" SERIAL NOT NULL, "username" text NOT NULL, "email" text NOT NULL, "passwordHash" text NOT NULL, "firstName" text NOT NULL, "lastName" text NOT NULL, "middleName" text, "image" text, "emailVerified" boolean NOT NULL DEFAULT false, "birthDate" date, "registrationDate" date NOT NULL, CONSTRAINT "PK_cace4a159ff9f2512dd42373760" PRIMARY KEY ("id"))');
+    await queryRunner.query('CREATE TABLE "user" ("id" SERIAL NOT NULL, "username" text NOT NULL, "email" text NOT NULL, "passwordHash" text NOT NULL, "firstName" text NOT NULL, "lastName" text NOT NULL, "middleName" text, "imageName" text, "emailVerified" boolean NOT NULL DEFAULT false, "birthDate" date, "registrationDate" date NOT NULL, CONSTRAINT "PK_cace4a159ff9f2512dd42373760" PRIMARY KEY ("id"))');
     await queryRunner.query('CREATE UNIQUE INDEX "index_user_email" ON "user" ("email") ');
     await queryRunner.query('CREATE UNIQUE INDEX "index_user_username" ON "user" ("username") ');
   }
