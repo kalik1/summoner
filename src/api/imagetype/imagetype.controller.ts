@@ -5,6 +5,7 @@ import { ApiTags } from '@nestjs/swagger';
 import { ImagetypeService } from './imagetype.service';
 import { CreateImagetypeDto } from './dto/create-imagetype.dto';
 import { UpdateImagetypeDto } from './dto/update-imagetype.dto';
+import { ParamIdDto } from '../base/dto/param-id.dto';
 
 @Controller('imagetype')
 @ApiTags('ImageType')
@@ -22,17 +23,17 @@ export class ImagetypeController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.imagetypeService.findOne(id);
+  findOne(@Param() params: ParamIdDto) {
+    return this.imagetypeService.findOne(params.id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateImagetypeDto: UpdateImagetypeDto) {
-    return this.imagetypeService.update(id, updateImagetypeDto);
+  update(@Param() params: ParamIdDto, @Body() updateImagetypeDto: UpdateImagetypeDto) {
+    return this.imagetypeService.update(params.id, updateImagetypeDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.imagetypeService.remove(id);
+  remove(@Param() params: ParamIdDto) {
+    return this.imagetypeService.remove(params.id);
   }
 }

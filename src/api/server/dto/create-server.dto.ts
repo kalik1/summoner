@@ -1,16 +1,21 @@
 import {
   Equals, IsNumber, IsString, IsUUID, Max, Min,
 } from 'class-validator';
+import { Type } from 'class-transformer';
 import { ServerEntity } from '../entities/server.entity';
 import { CreateDto } from '../../base/dto/create.dto';
 import { EntityToDtoNoIdAndTimeStamps } from '../../base/base.interfaces';
+import { CreateExternalPortDto } from './create-external-port.dto';
 
 type FacultativeProps = 'managePort';
 
 type RequiredPropertiesT = Omit<EntityToDtoNoIdAndTimeStamps<ServerEntity>, FacultativeProps>;
 type FacultativePropertiesT = Partial<Pick<EntityToDtoNoIdAndTimeStamps<ServerEntity>, FacultativeProps>>;
 
-export class CreateServerDto extends CreateDto implements Partial<RequiredPropertiesT>, FacultativePropertiesT {
+type RequiredPropertiesFilteredT = Omit<RequiredPropertiesT, 'managePort' | 'serverPort' >;
+type FacultativePropertiesFilteredT = Omit<RequiredPropertiesT, 'managePort' | 'serverPort'>;
+
+export class CreateServerDto extends CreateDto implements RequiredPropertiesFilteredT, FacultativePropertiesFilteredT {
   @Equals(undefined)
   id: never;
 
@@ -29,10 +34,8 @@ export class CreateServerDto extends CreateDto implements Partial<RequiredProper
   @IsUUID()
   user: string;
 
-  @IsNumber()
-  @Min(1024)
-  @Max(65534)
-  managePort?: string;
+  @Type(() => CreateExternalPortDto)
+  managePort?: CreateExternalPortDto;
 
   @IsString()
   name: string;
@@ -42,8 +45,6 @@ export class CreateServerDto extends CreateDto implements Partial<RequiredProper
   @Max(65534)
   port: number;
 
-  @IsNumber()
-  @Min(1024)
-  @Max(65534)
-  serverPort: string;
+  @Type(() => CreateExternalPortDto)
+  serverPort?: CreateExternalPortDto;
 }

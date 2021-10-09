@@ -39,8 +39,8 @@ async function bootstrap() {
 
   // Swagger API Documentation
   const options = new DocumentBuilder()
-    .setTitle('NestJS Hackathon Starter by @ahmetuysal')
-    .setDescription('NestJS Hackathon Starter API description')
+    .setTitle('Game Server Summoner')
+    .setDescription('Can I spawn server like minions?')
     .setVersion('0.1.0')
     .addTag('auth')
     .addTag('users')

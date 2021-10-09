@@ -45,7 +45,6 @@ export class ServerController {
     return this.dockerService.GetContainerStatus(currentServer.instance.id, currentServer.containterId);
   }
 
-
   @Get()
   findAll() {
     return this.serverService.findAll();

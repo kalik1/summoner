@@ -11,7 +11,6 @@ import { MyBaseEntity } from '../../base/entities/base.enitity_tmpl';
 
 @Entity()
 export class ServerEntity extends MyBaseEntity {
-
   @Column()
   name: string;
 
@@ -23,12 +22,6 @@ export class ServerEntity extends MyBaseEntity {
 
   @ManyToOne(() => InstanceEntity, (instance: InstanceEntity) => instance.servers)
   instance: InstanceEntity;
-
-  @Column('int4', { nullable: false })
-  @IsNumber()
-  @Min(0)
-  @Max(65535)
-  port: number;
 
   @ManyToOne(() => ImageEntity, (image: ImageEntity) => image.servers)
   image: ImageEntity;
