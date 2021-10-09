@@ -2,14 +2,16 @@ import { Test, TestingModule } from '@nestjs/testing';
 import * as request from 'supertest';
 import { ValidationPipe } from '@nestjs/common';
 import { AppModule } from '../src/app.module';
-import { SignupRequest } from '../src/auth/models';
+import { SignupRequest } from '../src/api/auth/models';
 
 describe('AuthController (e2e)', () => {
   let app;
 
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [AppModule],
+      imports: [
+        AppModule,
+      ],
     })
       .compile();
 

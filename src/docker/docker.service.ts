@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import * as Docker from 'dockerode';
-import { ServerEntity } from '../server/entities/server.entity';
+import { ServerEntity } from '../api/server/entities/server.entity';
 
 interface DockerInstance {
   InstanceName: string;
