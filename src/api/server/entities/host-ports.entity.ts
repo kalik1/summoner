@@ -1,10 +1,12 @@
 import {
-
-  Column, Entity, Index, JoinColumn, OneToOne, PrimaryGeneratedColumn,
+  Column,
+  Entity, Index, JoinColumn, OneToOne, PrimaryGeneratedColumn,
 } from 'typeorm';
-import { IsNumber, Max, Min } from 'class-validator';
+import { Transform } from 'class-transformer';
 import { ServerEntity } from './server.entity';
 import { MyBaseEntity } from '../../base/entities/base.enitity_tmpl';
+import { IsPortAndProto } from '../../../components/server-proto.class-validator/server-proto.class-validator';
+import { serverPortTransformer } from '../../../components/server-proto.class-transformer/server-proto.class-transformer';
 
 @Entity()
 @Index(['externalPort', 'server'], { unique: true })
@@ -17,9 +19,6 @@ export class ExternalPortsEntity extends MyBaseEntity {
   @JoinColumn()
   server: ServerEntity;
 
-  @Column('int4', { nullable: false })
-  @IsNumber()
-  @Min(0)
-  @Max(65535)
+  @Column('text')
   externalPort: number;
 }

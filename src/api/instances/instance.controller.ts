@@ -1,11 +1,13 @@
 import {
   Controller, Get, Post, Body, Patch, Param, Delete,
 } from '@nestjs/common';
+import { ApiProperty, ApiTags } from '@nestjs/swagger';
 import { InstancesService } from './instances.service';
 import { CreateInstanceDto } from './dto/create-instance.dto';
 import { UpdateInstanceDto } from './dto/update-instance.dto';
 
 @Controller('instances')
+@ApiTags('Instances')
 export class InstancesController {
   constructor(private readonly instancesService: InstancesService) {}
 
