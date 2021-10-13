@@ -9,14 +9,14 @@ import { ImageTypeParamDto } from '../imagetype/dto/param-imagetype.dto';
 import { MountEntity } from './entities/mount.entity';
 import { ImageTypeIdParamDto } from '../imagetype/dto/param-imagetype-id.dto';
 
-@Controller('/imagetype/:imagetype/mount')
+@Controller('/imagetype/:imageType/mount')
 @ApiTags('Mount')
 export class MountController {
   constructor(private readonly mountService: MountService) {}
 
   @Post()
   create(@Param() imageTypeParams: ImageTypeParamDto, @Body() createMountDto: CreateMountDto): Promise<MountEntity> {
-    return this.mountService.create(createMountDto);
+    return this.mountService.create(createMountDto, imageTypeParams.imageType);
   }
 
   @Get()

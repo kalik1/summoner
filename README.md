@@ -154,13 +154,13 @@ $ nest start
 
 ```bash
 # unit tests
-$ yarn run test
+$ yarn run info
 
 # e2e tests
-$ yarn run test:e2e
+$ yarn run info:e2e
 
-# test coverage
-$ yarn run test:cov
+# info coverage
+$ yarn run info:cov
 ```
 
 ## Support Nest

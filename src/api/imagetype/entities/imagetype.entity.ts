@@ -7,7 +7,7 @@ import { EnvEntity } from '../../env/entities/env.entity';
 import { MyBaseEntity } from '../../base/entities/base.enitity_tmpl';
 import { MountEntity } from '../../mount/entities/mount.entity';
 
-export const IMAGE_TYPES = ['baseq3'];
+export const IMAGE_TYPES = ['baseq3', 'quake-osp'];
 
 @Entity()
 export class ImageTypeEntity extends MyBaseEntity {

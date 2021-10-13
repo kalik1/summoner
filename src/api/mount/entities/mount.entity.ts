@@ -5,7 +5,7 @@ import { ImageTypeEntity } from '../../imagetype/entities/imagetype.entity';
 import { MyBaseEntity } from '../../base/entities/base.enitity_tmpl';
 
 @Entity()
-export class MountEntity  extends MyBaseEntity {
+export class MountEntity extends MyBaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 

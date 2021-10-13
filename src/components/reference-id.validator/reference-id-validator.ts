@@ -1,11 +1,17 @@
-@ValidatorConstraint({ name: 'customText', async: false })
-export class CustomTextLength implements ValidatorConstraintInterface {
-  validate(text: string, args: ValidationArguments) {
-    return text.length > 1 && text.length < 10; // for async validations you must return a Promise<boolean> here
+import {
+  isUUID, ValidationArguments, ValidatorConstraint, ValidatorConstraintInterface,
+} from 'class-validator';
+import { MyBaseEntity } from '../../api/base/entities/base.enitity_tmpl';
+
+@ValidatorConstraint({ name: 'ResourceUUID', async: false })
+export class ResourceUUID<K extends MyBaseEntity> implements ValidatorConstraintInterface {
+  validate(reference: K, args?: ValidationArguments) {
+    if (reference?.id === null) return true;
+    return isUUID(reference.id, args?.constraints ? args?.constraints[0] : 'all');
   }
 
-  defaultMessage(args: ValidationArguments) {
+  defaultMessage(args?: ValidationArguments) {
     // here you can provide default error message if validation failed
-    return 'Text ($value) is too short or too long!';
+    return `Invalid Resource UUID, id: ${(args.value?.id)}`;
   }
 }

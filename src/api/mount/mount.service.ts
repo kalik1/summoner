@@ -19,9 +19,12 @@ export class MountService {
     return this.mountRepository.findOne({ id, imageType });
   }
 
-  async create(createMountDto: CreateMountDto): Promise<MountEntity> {
+  async create(createMountDto: CreateMountDto, imageType: string): Promise<MountEntity> {
     const newMountEntity = new MountEntity();
     Object.assign(newMountEntity, createMountDto);
+    const imageTypeE = new ImageTypeEntity();
+    imageTypeE.id = imageType;
+    newMountEntity.imageType = imageTypeE;
     await this.mountRepository.save(newMountEntity);
     return this.getOne(newMountEntity.id, newMountEntity.imageType);
   }
@@ -46,7 +49,7 @@ export class MountService {
   async remove(imageTypeParams: ImageTypeIdParamDto): Promise<MountEntity> {
     const imageType = new ImageTypeEntity();
     imageType.id = imageTypeParams.imageType;
-    await this.mountRepository.softDelete({ imageType, id: imageTypeParams.id });
+    await this.mountRepository.delete({ imageType, id: imageTypeParams.id });
     return this.getOne(imageTypeParams.id, imageType);
   }
 }

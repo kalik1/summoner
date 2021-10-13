@@ -7,12 +7,9 @@ export class MyBaseEntity extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @CreateDateColumn({ name: 'created_at' })
+  @CreateDateColumn({ name: 'createdAt', select: false })
   createdAt: Date;
 
-  @UpdateDateColumn({ name: 'updated_at' })
+  @UpdateDateColumn({ name: 'updatedAt', select: false })
   updatedAt: Date;
-
-  @DeleteDateColumn()
-  deletedAt?: Date;
 }

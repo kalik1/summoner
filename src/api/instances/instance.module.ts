@@ -1,12 +1,13 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { InstancesService } from './instances.service';
-import { InstancesController } from './instances.controller';
+import { InstanceService } from './instance.service';
+import { InstanceController } from './instance.controller';
 import { InstanceEntity } from './entities/instance.entity';
+import { DockerService } from '../../docker/docker.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([InstanceEntity])],
-  controllers: [InstancesController],
-  providers: [InstancesService],
+  controllers: [InstanceController],
+  providers: [InstanceService, DockerService],
 })
-export class InstancesModule {}
+export class InstanceModule {}

@@ -11,7 +11,7 @@ import { serverPortTransformer } from '../../../components/server-proto.class-tr
 @Entity()
 @Index(['externalPort', 'server'], { unique: true })
 
-export class ExternalPortsEntity extends MyBaseEntity {
+export class HostPortsEntity extends MyBaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 

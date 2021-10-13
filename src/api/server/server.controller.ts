@@ -5,6 +5,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import * as Docker from 'dockerode';
 
+import { ApiTags } from '@nestjs/swagger';
 import { ServerService } from './server.service';
 import { CreateServerDto } from './dto/create-server.dto';
 import { UpdateServerDto } from './dto/update-server.dto';
@@ -12,6 +13,7 @@ import { DockerService } from '../../docker/docker.service';
 import { ServerEntity } from './entities/server.entity';
 
 @Controller('server')
+@ApiTags('Server')
 export class ServerController {
   constructor(
     private readonly serverService: ServerService,
@@ -23,8 +25,8 @@ export class ServerController {
   @Post()
   async create(@Body() createServerDto: CreateServerDto) {
     let currentServer: ServerEntity = await this.serverService.create(createServerDto);
-    currentServer = await this.serverRepository.findOne(currentServer.id, { relations: ['image', 'imageType', 'imageType.mounts', 'instance', 'serverPort', 'managePort'] });
-
+    currentServer = await this.serverRepository.findOne(currentServer.id, { relations: ['image', 'image.imageType', 'image.imageType.mounts', 'image.imageType.envs', 'instance'] });
+    console.log(currentServer);
     const container = await this.dockerService.CreateContainer(currentServer);
     currentServer.containterId = container.id;
     currentServer = await this.serverRepository.save(currentServer);
@@ -32,17 +34,22 @@ export class ServerController {
   }
 
   @Post(':id/start')
-  async start(@Param('id') id: string): Promise<Docker.ContainerStats> {
-    const currentServer: ServerEntity = await this.serverRepository.findOne(id, { relations: ['instance'] });
-    await this.dockerService.StartContainer(currentServer.instance.id, currentServer.containterId);
-    return this.dockerService.GetContainerStatus(currentServer.instance.id, currentServer.containterId);
+  async start(@Param('id') id: string): Promise<any> /*Promise<Docker.ContainerStats>*/ {
+    return this.serverService.start(id);
   }
 
   @Post(':id/stop')
-  async stop(@Param('id') id: string): Promise<Docker.ContainerStats> {
-    const currentServer: ServerEntity = await this.serverRepository.findOne(id, { relations: ['instance'] });
-    await this.dockerService.StopContainer(currentServer.instance.id, currentServer.containterId);
-    return this.dockerService.GetContainerStatus(currentServer.instance.id, currentServer.containterId);
+  async stop(@Param('id') id: string): Promise<any> /*Promise<Docker.ContainerStats>*/  {
+    return this.serverService.stop(id);
+    // const currentServer: ServerEntity = await this.serverRepository.findOne(id, { relations: ['instance'] });
+    //
+    // try {
+    //   return this.dockerService.GetContainerState(currentServer.instance.id, currentServer.containterId);
+    // } catch (e) {
+    //   return e;
+    // }
+    // // await this.dockerService.StopContainer(currentServer.instance.id, currentServer.containterId);
+    // return this.dockerService.GetContainerState(currentServer.instance.id, currentServer.containterId);
   }
 
   @Get()
@@ -54,6 +61,17 @@ export class ServerController {
   findOne(@Param('id') id: string) {
     return this.serverService.findOne(id);
   }
+
+  @Get(':id/info')
+  info(@Param('id') id: string) {
+    return this.serverService.info(id);
+  }
+
+  @Get(':id/state')
+  state(@Param('id') id: string) {
+    return this.serverService.state(id);
+  }
+
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateServerDto: UpdateServerDto) {

@@ -1,5 +1,5 @@
 import {
-  Controller, Get, Post, Body, Patch, Param, Delete, NotFoundException,
+  Controller, Get, Post, Body, Patch, Param, Delete,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { EnvService } from './env.service';
@@ -9,14 +9,14 @@ import { ImageTypeParamDto } from '../imagetype/dto/param-imagetype.dto';
 import { EnvEntity } from './entities/env.entity';
 import { ImageTypeIdParamDto } from '../imagetype/dto/param-imagetype-id.dto';
 
-@Controller('/imagetype/:imagetype/env')
+@Controller('/imagetype/:imageType/env')
 @ApiTags('Env')
 export class EnvController {
   constructor(private readonly envService: EnvService) {}
 
   @Post()
   create(@Param() imageTypeParams: ImageTypeParamDto, @Body() createEnvDto: CreateEnvDto): Promise<EnvEntity> {
-    return this.envService.create(createEnvDto);
+    return this.envService.create(createEnvDto, imageTypeParams);
   }
 
   @Get()
@@ -36,6 +36,6 @@ export class EnvController {
 
   @Delete(':id')
   remove(@Param() imageTypeParams: ImageTypeIdParamDto): Promise<EnvEntity> {
-    return this.envService.findOne(imageTypeParams);
+    return this.envService.remove(imageTypeParams);
   }
 }

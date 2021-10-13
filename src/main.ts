@@ -16,7 +16,7 @@ async function bootstrap() {
   app.use(requestIp.mw());
 
   // Helmet Middleware against known security vulnerabilities
-  app.use(helmet());
+  // app.use(helmet());
 
   // Rate limiting against brute-force attacks
   app.use(

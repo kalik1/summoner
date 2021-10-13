@@ -12,6 +12,6 @@ export class EnvEntity extends MyBaseEntity {
   @Column({ type: 'text', nullable: false })
   value: string;
 
-  @ManyToOne(() => ImageTypeEntity, (image: ImageTypeEntity) => image.envs)
+  @ManyToOne(() => ImageTypeEntity, (image: ImageTypeEntity) => image.envs, { nullable: false })
   imageType: ImageTypeEntity;
 }

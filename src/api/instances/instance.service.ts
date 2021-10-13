@@ -1,26 +1,60 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { CreateInstanceDto } from './dto/create-instance.dto';
 import { UpdateInstanceDto } from './dto/update-instance.dto';
+import { InstanceEntity } from './entities/instance.entity';
+import { DockerService } from '../../docker/docker.service';
 
 @Injectable()
-export class InstancesService {
-  create(createInstanceDto: CreateInstanceDto) {
-    return 'This action adds a new instance';
+export class InstanceService {
+  constructor(
+    @InjectRepository(InstanceEntity)
+    private instanceRepository: Repository<InstanceEntity>,
+    private dockerService: DockerService,
+  ) {
   }
 
-  findAll() {
-    return `This action returns all instances`;
+  private getOne(id: InstanceEntity['id']) {
+    return this.instanceRepository.findOne({ id });
   }
 
-  findOne(id: string) {
-    return `This action returns a #${id} instance`;
+  async create(createInstanceDto: CreateInstanceDto): Promise<InstanceEntity> {
+    const newInstanceEntity = new InstanceEntity();
+    Object.assign(newInstanceEntity, createInstanceDto);
+    await this.instanceRepository.save(newInstanceEntity);
+    return this.getOne(newInstanceEntity.id);
   }
 
-  update(id: string, updateInstanceDto: UpdateInstanceDto) {
-    return `This action updates a #${id} instance`;
+  async info(id: InstanceEntity['id']) {
+    const instance = await this.getOne(id);
+    return this.dockerService.Info(instance);
   }
 
-  remove(id: string) {
-    return `This action removes a #${id} instance`;
+  async getContainers(id: InstanceEntity['id']) {
+    const instance = await this.getOne(id);
+    return this.dockerService.getContainers(instance);
+  }
+
+  async hostPorts(id: InstanceEntity['id']) {
+    const instance = await this.getOne(id);
+    return this.dockerService.getUsedHostPorts(instance);
+  }
+
+  findAll(): Promise<InstanceEntity[]> {
+    return this.instanceRepository.find();
+  }
+
+  findOne(id: InstanceEntity['id']): Promise<InstanceEntity> {
+    return this.getOne(id);
+  }
+
+  async update(id: InstanceEntity['id'], updateInstanceDto: UpdateInstanceDto): Promise<InstanceEntity> {
+    await this.instanceRepository.update({ id }, updateInstanceDto);
+    return this.getOne(id);
+  }
+
+  async remove(id: string): Promise<void> {
+    await this.instanceRepository.delete({ id });
   }
 }

@@ -1,5 +1,5 @@
 import {
-  Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn,
+  Column, Entity, JoinTable, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn,
 } from 'typeorm';
 import {
   IsIn, IsNumber, Max, Min,
@@ -9,8 +9,7 @@ import {
 import { UserEntity } from '../../user/entities/user.entity';
 import { MyBaseEntity } from '../../base/entities/base.enitity_tmpl';
 import { ServerEntity } from '../../server/entities/server.entity';
-
-const DOCKER_PROTOCOLS = <const>['http', 'https', 'ssh'];
+import { DOCKER_PROTOCOLS } from '../../../constnats';
 
 @Entity()
 export class InstanceEntity extends MyBaseEntity {
@@ -24,9 +23,6 @@ export class InstanceEntity extends MyBaseEntity {
   host: string;
 
   @Column('int4', { nullable: false })
-  @IsNumber()
-  @Min(0)
-  @Max(65535)
   port: number;
 
   @Column({
@@ -43,6 +39,13 @@ export class InstanceEntity extends MyBaseEntity {
   })
   baseMountPath: string;
 
-  @ManyToOne(() => UserEntity, (user: UserEntity) => user.instances)
-  user: UserEntity;
+  @ManyToMany(() => UserEntity, (user: UserEntity) => user.instances)
+  @JoinTable()
+  users: UserEntity[];
+
+  @Column('int4', { nullable: false, default: 20000 })
+  containersLowerPortRange: number;
+
+  @Column('int4', { nullable: false, default: 50000 })
+  containersHigherPortRange: number;
 }

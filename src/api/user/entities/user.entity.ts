@@ -1,6 +1,5 @@
 import {
-  BaseEntity,
-  Column, Entity, Index, OneToMany, PrimaryGeneratedColumn,
+  Column, Entity, Index, ManyToMany, OneToMany,
 } from 'typeorm';
 // eslint-disable-next-line import/no-cycle
 import { ServerEntity } from '../../server/entities/server.entity';
@@ -54,6 +53,6 @@ export class UserEntity extends MyBaseEntity {
   @OneToMany(() => ServerEntity, (server: ServerEntity) => server.user)
   servers: ServerEntity[];
 
-  @OneToMany(() => InstanceEntity, (instance: InstanceEntity) => instance.user)
+  @ManyToMany(() => InstanceEntity, (instance: InstanceEntity) => instance.users)
   instances: InstanceEntity[];
 }

@@ -3,7 +3,7 @@ import {
 } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
-export class CreateExternalPortDto {
+export class CreateHostPortDto {
 
   @Equals(undefined)
   id: never;
