@@ -43,7 +43,7 @@ You can also look at my [Angular Hackathon Starter](https://github.com/ahmetuysa
 
 This template uses Postgres by default. If you want to use another database, follow instructions in the [official Nest documentation](https://docs.nestjs.com/techniques/database) and use appropriate [column types](https://github.com/typeorm/typeorm/blob/master/src/driver/types/ColumnTypes.ts) for your entities.
 
-If you wish to use another database you will also have to edit [`ormconfig.js`](ormconfig.js) file accordingly.
+If you wish to use another database you will also have to edit [`ormconfig.js.old.old`](src/server/ormconfig.js) file accordingly.
 
 Template includes three different environment options by default. Most of the time you will use the `local`
 environment when developing and `production` environment on production. You will need to fill out corresponding
@@ -126,7 +126,7 @@ Mail templates are highly customizable and heavily depend on configurations. Ent
 ### Migrations
 
 By default this template disables synchronize in favor of [migrations](https://typeorm.io/#/migrations).
-If you wish to enable synchronize you can edit [`ormconfig.js`](ormconfig.js) file.
+If you wish to enable synchronize you can edit [`ormconfig.js.old.old`](src/server/ormconfig.js) file.
 
 ```bash
 # generate migration for local environment

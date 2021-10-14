@@ -1,30 +1,19 @@
 {
-  "exclude": ["**/node_modules/**"],
-  "include": ["./src/server/*.ts"],
   "compilerOptions": {
-    "target": "es2017",
-    "lib": [
-      "dom",
-      "es2015"
-    ],
-    "types": [
-      "node"
-    ],
-    "rootDir": "src/server",
-    "module": "commonjs",
+
+    "rootDir": "./src/server",
     "moduleResolution": "node",
-    "experimentalDecorators": true,
     "noImplicitAny": false,
     "noImplicitThis": false,
     "strictNullChecks": true,
-    "removeComments": true,
     "suppressImplicitAnyIndexErrors": true,
     "allowSyntheticDefaultImports": true,
-    "outDir": "./dist/server",
-    "sourceMap": true,
+
     "declaration": false,
     "emitDecoratorMetadata": true,
-    "allowJs": true,
+    "module": "commonjs",
+    "removeComments": true,
+
     "baseUrl": "./src",
     "paths": {
       "@client/*": [
@@ -36,6 +25,22 @@
       "@server/*": [
         "./src/server/*"
       ]
-    }
-  }
+    },
+
+    "experimentalDecorators": true,
+    "target": "es2017",
+    "sourceMap": true,
+    "outDir": "./dist",
+    "types": [
+      "node"
+    ],
+
+    "incremental": true,
+    "allowJs": true
+  },
+  "exclude": [
+    "**/node_modules/**",
+    "**/ormconfig.js"
+  ],
+  "include": ["./src/server/*.ts"]
 }
