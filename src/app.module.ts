@@ -12,10 +12,7 @@ import { ImagetypeModule } from './api/imagetype/imagetype.module';
 import { DockerService } from './docker/docker.service';
 import { MountModule } from './api/mount/mount.module';
 import { EnvModule } from './api/env/env.module';
-import { LogsModule } from './logs/logs.module';
 import * as ormconfig from '../ormconfig';
-import { ServeStaticModule } from '@nestjs/serve-static';
-import { join } from 'path';
 
 @Module({
   imports: [
@@ -30,10 +27,9 @@ import { join } from 'path';
     ImagetypeModule,
     MountModule,
     EnvModule,
-    LogsModule,
-    ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '../../src', 'static'),
-    }),
+    // ServeStaticModule.forRoot({
+    //   rootPath: join(__dirname, '../../src', 'static'),
+    // }),
   ],
   providers: [DockerService],
 })

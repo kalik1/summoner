@@ -40,7 +40,11 @@ export class ServerController {
 
   @Post(':id/stop')
   async stop(@Param('id') id: string): Promise<any> /*Promise<Docker.ContainerStats>*/  {
-    return this.serverService.stop(id);
+    try {
+      return this.serverService.stop(id);
+    } catch (e) {
+      console.error(e)
+    }
     // const currentServer: ServerEntity = await this.serverRepository.findOne(id, { relations: ['instance'] });
     //
     // try {

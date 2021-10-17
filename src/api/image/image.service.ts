@@ -32,9 +32,17 @@ export class ImageService {
     }
   }
 
-  private getOne(id: string) {
-    return this.imageRepository.findOne(id);
+  private baseQ() {
+    const query = this.imageRepository.createQueryBuilder('image')
+    query.leftJoinAndSelect('image.imageType', 'imageType')
+    return query;
   }
+
+
+  private getOne(id: string) {
+    return this.baseQ().where({id: id}).getOne();
+  }
+
 
   async create(createImageDto: CreateImageDto): Promise<ImageEntity> {
     const newImage = new ImageEntity();
@@ -45,7 +53,7 @@ export class ImageService {
   }
 
   findAll(): Promise<ImageEntity[]> {
-    return this.imageRepository.find();
+    return this.baseQ().getMany()
   }
 
   findOne(id: string): Promise<ImageEntity> {

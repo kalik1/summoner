@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import * as Docker from 'dockerode';
 import * as Dockerode from 'dockerode';
-import { ContainerInfo } from 'dockerode';
+import { ContainerInfo, ImageInfo } from 'dockerode';
 import { IncomingMessage } from 'http';
 import * as util from 'util';
 import { ServerEntity } from '../api/server/entities/server.entity';
@@ -27,7 +27,7 @@ export class DockerService {
   StartContainer(InstanceName: string, containerId: string): Promise<unknown> {
     const container = this.getInstanceFromName(InstanceName)
       .getContainer(containerId);
-    // container.attach({ stream: true, stdout: true, stderr: true }, (err, stream) => {
+    // containers.attach({ stream: true, stdout: true, stderr: true }, (err, stream) => {
     //   if (err) throw new Error(err);
     //   stream.pipe(process.stdout);
     // });
@@ -69,6 +69,10 @@ export class DockerService {
 
   async getContainers(instance: InstanceEntity): Promise<ContainerInfo[]> {
     return this.getClientFromInstance(instance).client.listContainers();
+  }
+
+  async getImages(instance: InstanceEntity): Promise<ImageInfo[]> {
+    return this.getClientFromInstance(instance).client.listImages();
   }
 
   async getUsedHostPorts(instance: InstanceEntity): Promise<string[]> {

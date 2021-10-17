@@ -62,10 +62,10 @@ export class ServerService {
     if (currentContainer) {
       const currentContainerStatus = await this.dockerService.GetContainerState(currentInstanceName, currentContainer.Id);
       if (['running', 'creating'].includes(currentContainerStatus.Status)) {
-        throw new BadRequestException('Container Already Running');
+        throw new BadRequestException('Server Already Running');
       }
     }
-    
+
     await this.ValidatePorts(currentServer);
 
     if (currentServer.containterId) {
@@ -123,16 +123,36 @@ export class ServerService {
     return this.getOne(id);
   }
 
-  async info(id: ServerEntity['id']): Promise<ContainerInspectInfo> {
+  private async serverNotRunning(currentServer: ServerEntity): Promise<ServerEntity> {
+    currentServer.containterId = null
+    await this.serverRepository.save(currentServer)
+    throw new BadRequestException('Container Is Not Running')
+  }
+
+  async info(id: ServerEntity['id']): Promise<ContainerInspectInfo | void> {
     const currentServer: ServerEntity = await this.serverRepository.findOne(id, { relations: ['instance'] });
+
     const currentInstanceName = await this.dockerService.GetOrStartClientFromInstance(currentServer.instance);
-    return this.dockerService.InspectContainer(currentInstanceName, currentServer.containterId);
+    console.log(currentInstanceName)
+    try {
+      return this.dockerService.InspectContainer(currentInstanceName, currentServer.containterId);
+    } catch (e) {
+      if (e.statusCode === 404) {
+        await this.serverNotRunning(currentServer)
+      }
+    }
   }
 
   async state(id: ServerEntity['id']): Promise<ContainerInspectInfo['State']> {
     const currentServer: ServerEntity = await this.serverRepository.findOne(id, { relations: ['instance'] });
     const currentInstanceName = await this.dockerService.GetOrStartClientFromInstance(currentServer.instance);
+    try {
     return this.dockerService.GetContainerState(currentInstanceName, currentServer.containterId);
+    } catch (e) {
+      if (e.statusCode === 404) {
+        await this.serverNotRunning(currentServer)
+      }
+    }
   }
 
   async update(id: ServerEntity['id'], updateServerDto: UpdateServerDto): Promise<ServerEntity> {

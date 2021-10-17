@@ -37,6 +37,11 @@ export class InstanceController {
     return this.instancesService.getContainers(params.id);
   }
 
+  @Get(':id/images')
+  getImages(@Param() params: ParamIdDto) {
+    return this.instancesService.getImages(params.id);
+  }
+
   @Get(':id/hostports')
   hostPorts(@Param() params: ParamIdDto) {
     return this.instancesService.hostPorts(params.id);

@@ -5,6 +5,7 @@ import { CreateInstanceDto } from './dto/create-instance.dto';
 import { UpdateInstanceDto } from './dto/update-instance.dto';
 import { InstanceEntity } from './entities/instance.entity';
 import { DockerService } from '../../docker/docker.service';
+import { ImageInfo } from 'dockerode';
 
 @Injectable()
 export class InstanceService {
@@ -34,6 +35,11 @@ export class InstanceService {
   async getContainers(id: InstanceEntity['id']) {
     const instance = await this.getOne(id);
     return this.dockerService.getContainers(instance);
+  }
+
+  async getImages(id: InstanceEntity['id']): Promise<ImageInfo[]> {
+    const instance = await this.getOne(id);
+    return this.dockerService.getImages(instance);
   }
 
   async hostPorts(id: InstanceEntity['id']) {

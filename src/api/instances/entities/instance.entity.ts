@@ -9,7 +9,7 @@ import {
 import { UserEntity } from '../../user/entities/user.entity';
 import { MyBaseEntity } from '../../base/entities/base.enitity_tmpl';
 import { ServerEntity } from '../../server/entities/server.entity';
-import { DOCKER_PROTOCOLS } from '../../../constnats';
+import { DOCKER_PROTOCOLS, INSTANCE_TYPES } from '../../../constnats';
 
 @Entity()
 export class InstanceEntity extends MyBaseEntity {
@@ -18,6 +18,9 @@ export class InstanceEntity extends MyBaseEntity {
 
   @OneToMany(() => ServerEntity, (server: ServerEntity) => server.instance)
   servers: ServerEntity[];
+
+  @Column({ unique: true, nullable: false})
+  name: string;
 
   @Column({ nullable: false })
   host: string;
@@ -32,6 +35,14 @@ export class InstanceEntity extends MyBaseEntity {
   })
   @IsIn(DOCKER_PROTOCOLS as unknown as string[])
   protocol?: typeof DOCKER_PROTOCOLS[number];
+
+  @Column({
+    type: 'enum',
+    enum: INSTANCE_TYPES,
+    default: 'docker',
+  })
+  @IsIn(INSTANCE_TYPES as unknown as string[])
+  instanceType?: typeof INSTANCE_TYPES[number];
 
   @Column('text', {
     default: '/summoner/',
